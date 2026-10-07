@@ -170,7 +170,7 @@ export default function ResultView({ article, result, onReset }: ResultViewProps
                      initial={{ width: 0 }}
                      animate={{ width: getSignalPercentage(sig.val || 'low') }}
                      transition={{ duration: 1, delay: 0.5 + (i * 0.1), ease: "easeOut" }}
-                     className={`absolute top-0 bottom-0 left-0 rounded-full ${getSignalColor(sig.val || 'low', sig.invert)} relative overflow-hidden`}
+                     className={`h-full rounded-full ${getSignalColor(sig.val || 'low', sig.invert)} relative overflow-hidden`}
                    >
                      <div className="absolute inset-0 bg-white/20 w-full h-full transform -skew-x-12 translate-x-[-100%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
                    </motion.div>
