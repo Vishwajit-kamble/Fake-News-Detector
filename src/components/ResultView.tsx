@@ -1,7 +1,7 @@
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { motion } from 'framer-motion';
-import { AlertTriangle, CheckCircle, HelpCircle, Shield, AlertCircle, FileText } from 'lucide-react';
+import { AlertTriangle, CheckCircle, HelpCircle, Shield, AlertCircle, FileText, Link as LinkIcon, ExternalLink } from 'lucide-react';
 import type { AnalyzeResponse } from '../lib/api';
 
 interface ResultViewProps {
@@ -160,6 +160,43 @@ export default function ResultView({ article, result, onReset }: ResultViewProps
           </div>
         </div>
       </div>
+
+      {/* Related Links */}
+      {result.related_links && result.related_links.length > 0 && (
+        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 md:p-8 shadow-sm mb-8">
+          <h3 className="text-lg font-semibold mb-6 flex items-center gap-2">
+            <LinkIcon className="w-5 h-5 text-slate-400" /> Related Original Sources
+          </h3>
+          <div className="space-y-3">
+            {result.related_links.map((link, i) => {
+              if (!link || link.includes("Provide 1-3")) return null;
+              
+              let hostname = "link";
+              let url = link.startsWith('http') ? link : `https://${link}`;
+              try { hostname = new URL(url).hostname; } catch {}
+
+              return (
+                <a 
+                  key={i} 
+                  href={url} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 p-4 rounded-xl bg-slate-50 hover:bg-slate-100 dark:bg-slate-950 dark:hover:bg-slate-800/80 border border-slate-100 dark:border-slate-800 transition-colors text-slate-700 dark:text-slate-300 group"
+                >
+                  <img 
+                    src={`https://icon.horse/icon/${hostname}`} 
+                    alt={hostname}
+                    className="w-8 h-8 rounded bg-white dark:bg-slate-800 p-0.5 border border-slate-200 dark:border-slate-700 object-contain shrink-0 group-hover:scale-105 transition-transform shadow-sm" 
+                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                  />
+                  <span className="truncate text-sm font-medium flex-1 text-indigo-600 dark:text-indigo-400 group-hover:underline">{link}</span>
+                  <ExternalLink className="w-4 h-4 shrink-0 text-slate-400 group-hover:text-indigo-500 transition-colors" />
+                </a>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {/* Article Text */}
       <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 md:p-8 shadow-sm">
