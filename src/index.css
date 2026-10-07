@@ -26,3 +26,28 @@ body {
   margin: 0;
   padding: 0;
 }
+
+@layer utilities {
+  .animate-gradient-x {
+    background-size: 200% 200%;
+    animation: gradient-x 8s ease infinite;
+  }
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+  .rotate-x-2 {
+    transform: rotateX(2deg);
+  }
+  .rotate-x-0 {
+    transform: rotateX(0deg);
+  }
+}
+
+@keyframes gradient-x {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
