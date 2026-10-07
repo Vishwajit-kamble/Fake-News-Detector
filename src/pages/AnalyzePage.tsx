@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ScanSearch, CheckCircle2, Loader2, Sparkles } from 'lucide-react';
+import { ScanSearch, CheckCircle2, Loader2, Sparkles, AlertCircle, ArrowRight } from 'lucide-react';
 import { analyzeArticle, type AnalyzeResponse } from '../lib/api';
 import ResultView from '../components/ResultView';
 
@@ -52,7 +52,6 @@ export default function AnalyzePage() {
     try {
       const data = await analyzeArticle({ content: article });
       
-      // Save to history in local storage
       const history = JSON.parse(localStorage.getItem('truthlens_history') || '[]');
       history.unshift({
         id: Date.now().toString(),
@@ -63,7 +62,6 @@ export default function AnalyzePage() {
       });
       localStorage.setItem('truthlens_history', JSON.stringify(history.slice(0, 50)));
 
-      // Give the animation a moment to finish step 4
       setTimeout(() => {
         setResult(data);
         setIsAnalyzing(false);
@@ -77,97 +75,117 @@ export default function AnalyzePage() {
   };
 
   const steps = [
-    "Receiving article data",
-    "Processing content",
-    "Evaluating credibility signals",
-    "Generating explanation",
-    "Preparing report"
+    "Establishing secure connection",
+    "Parsing article text & structure",
+    "Running neural credibility models",
+    "Grounding claims via live web search",
+    "Compiling final analysis report"
   ];
 
   if (result && !isAnalyzing) {
     return (
-      <div className="py-12 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-slate-950 min-h-[calc(100vh-4rem)]">
+      <div className="py-12 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-[#030712] min-h-[calc(100vh-4rem)] relative overflow-hidden">
+        <div className="absolute top-0 inset-x-0 h-[500px] bg-gradient-to-b from-indigo-500/10 to-transparent pointer-events-none"></div>
         <ResultView article={article} result={result} onReset={handleReset} />
       </div>
     );
   }
 
   return (
-    <div className="py-12 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-slate-950 min-h-[calc(100vh-4rem)] flex flex-col items-center">
+    <div className="py-12 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-[#030712] min-h-[calc(100vh-4rem)] flex flex-col items-center relative overflow-hidden">
       
+      {/* Background gradients */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-[-20%] left-[20%] w-[40%] h-[40%] rounded-full bg-indigo-600/10 blur-[120px]"></div>
+        <div className="absolute bottom-[-20%] right-[20%] w-[40%] h-[40%] rounded-full bg-blue-600/10 blur-[120px]"></div>
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay"></div>
+      </div>
+
       <AnimatePresence mode="wait">
         {!isAnalyzing ? (
           <motion.div 
             key="form"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            className="w-full max-w-3xl"
+            exit={{ opacity: 0, scale: 0.95, filter: "blur(10px)" }}
+            transition={{ duration: 0.5 }}
+            className="w-full max-w-4xl relative z-10"
           >
-            <div className="text-center mb-10">
-              <h1 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-3">
-                What does this article really say?
+            <div className="text-center mb-12">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-200/50 dark:border-indigo-500/20 text-xs font-semibold tracking-wider text-indigo-600 dark:text-indigo-400 uppercase mb-6">
+                <ScanSearch className="w-3.5 h-3.5" /> Intelligence Engine
+              </div>
+              <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white mb-4 tracking-tight">
+                Analyze an <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-blue-500">Article</span>
               </h1>
-              <p className="text-slate-600 dark:text-slate-400">
-                Paste the article content below for AI analysis.
+              <p className="text-lg text-slate-600 dark:text-slate-400 font-light">
+                Paste the full text below. Our AI will break down its credibility in seconds.
               </p>
             </div>
 
-            <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
-              <form onSubmit={handleSubmit} className="p-6 md:p-8">
-                
+            <div className="bg-white/70 dark:bg-[#0a0f1c]/70 backdrop-blur-2xl rounded-3xl shadow-2xl shadow-indigo-500/5 border border-slate-200/50 dark:border-white/10 overflow-hidden relative group transition-all duration-500 hover:shadow-indigo-500/10">
+              <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 via-transparent to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+              
+              <form onSubmit={handleSubmit} className="p-6 md:p-10 relative z-10">
                 {error && (
-                  <div className="mb-6 p-4 bg-red-50 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 text-red-600 dark:text-red-400 rounded-lg text-sm flex items-center gap-2">
-                    <AlertCircle className="w-4 h-4" />
-                    {error}
-                  </div>
+                  <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="mb-8 p-4 bg-red-50/80 dark:bg-red-500/10 border border-red-200 dark:border-red-500/20 text-red-600 dark:text-red-400 rounded-2xl text-sm flex items-center gap-3 backdrop-blur-sm">
+                    <AlertCircle className="w-5 h-5 shrink-0" />
+                    <span className="font-medium">{error}</span>
+                  </motion.div>
                 )}
 
-                <div className="mb-8">
-                  <div className="flex justify-between mb-2">
-                    <label htmlFor="article" className="block text-sm font-medium text-slate-900 dark:text-slate-300">
+                <div className="mb-10">
+                  <div className="flex justify-between items-center mb-4">
+                    <label htmlFor="article" className="block text-sm font-semibold tracking-wide uppercase text-slate-700 dark:text-slate-300">
                       Article Content
                     </label>
                     <button 
                       type="button" 
                       onClick={handleSample}
-                      className="text-xs text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1"
+                      className="text-xs font-medium text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 flex items-center gap-1.5 bg-indigo-50 dark:bg-indigo-500/10 px-3 py-1.5 rounded-lg transition-colors border border-indigo-100 dark:border-indigo-500/20"
                     >
-                      <Sparkles className="w-3 h-3" /> Try sample
+                      <Sparkles className="w-3.5 h-3.5" /> Try Sample Text
                     </button>
                   </div>
-                  <textarea
-                    id="article"
-                    value={article}
-                    onChange={(e) => setArticle(e.target.value)}
-                    placeholder="Paste the complete news article here..."
-                    rows={10}
-                    className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors text-slate-900 dark:text-white placeholder:text-slate-400 resize-y"
-                  ></textarea>
-                  <div className="flex justify-between items-center mt-1.5">
-                    <div className="text-xs text-slate-500 dark:text-slate-400">
-                      Tip: Include the complete article for a more meaningful analysis.
+                  <div className="relative">
+                    <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 to-purple-500 rounded-2xl blur opacity-0 group-focus-within:opacity-20 transition-opacity duration-500"></div>
+                    <textarea
+                      id="article"
+                      value={article}
+                      onChange={(e) => setArticle(e.target.value)}
+                      placeholder="Paste the complete news article text here..."
+                      rows={12}
+                      className="relative w-full px-6 py-5 bg-slate-50/50 dark:bg-[#030712]/80 backdrop-blur-sm border-2 border-slate-200 dark:border-slate-800 rounded-2xl focus:ring-0 focus:border-indigo-500 dark:focus:border-indigo-500 transition-colors text-slate-900 dark:text-white placeholder:text-slate-400 resize-y text-lg leading-relaxed shadow-inner"
+                    ></textarea>
+                  </div>
+                  <div className="flex justify-between items-center mt-3 px-1">
+                    <div className="text-sm text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+                      <ScanSearch className="w-4 h-4" /> Tip: Include the full text for highest accuracy.
                     </div>
-                    <div className="text-xs text-slate-400">
+                    <div className="text-sm font-medium text-slate-400 dark:text-slate-500 bg-slate-100 dark:bg-slate-800/50 px-2 py-1 rounded-md">
                       {article.length} chars
                     </div>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4 pt-4 border-t border-slate-100 dark:border-slate-800">
+                <div className="flex flex-col sm:flex-row items-center gap-4 pt-6 border-t border-slate-200/50 dark:border-slate-800/50">
                   <button
                     type="submit"
                     disabled={!article}
-                    className="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-6 rounded-xl transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full sm:flex-1 relative group/btn overflow-hidden bg-indigo-600 dark:bg-indigo-500 text-white font-bold py-4 px-8 rounded-2xl transition-all shadow-xl shadow-indigo-600/20 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none hover:-translate-y-0.5"
                   >
-                    Analyze Article
+                    <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 via-blue-600 to-indigo-600 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-500 bg-[length:200%_auto] animate-gradient-x"></div>
+                    <span className="relative z-10 flex items-center justify-center gap-2 text-lg">
+                      Start Analysis <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" />
+                    </span>
                   </button>
                   <button
                     type="button"
                     onClick={handleClear}
-                    className="px-6 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-medium rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                    disabled={!article}
+                    className="w-full sm:w-auto px-8 py-4 bg-white/50 dark:bg-slate-900/50 backdrop-blur-md border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-semibold rounded-2xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                   >
-                    Clear
+                    Clear Text
                   </button>
                 </div>
               </form>
@@ -176,39 +194,57 @@ export default function AnalyzePage() {
         ) : (
           <motion.div 
             key="analyzing"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            className="w-full max-w-md my-auto flex flex-col items-center text-center p-8 bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-xl shadow-indigo-500/5"
+            initial={{ opacity: 0, scale: 0.9, filter: "blur(10px)" }}
+            animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+            transition={{ duration: 0.5, type: "spring" }}
+            className="w-full max-w-lg my-auto flex flex-col items-center p-12 bg-white/60 dark:bg-[#0a0f1c]/80 backdrop-blur-2xl rounded-[3rem] border border-white/50 dark:border-white/10 shadow-2xl shadow-indigo-500/10 relative overflow-hidden"
           >
-            <div className="w-20 h-20 bg-indigo-50 dark:bg-indigo-900/20 rounded-full flex items-center justify-center mb-8 relative">
-              <ScanSearch className="w-10 h-10 text-indigo-600 dark:text-indigo-400" />
-              <div className="absolute inset-0 border-4 border-indigo-500/20 rounded-full animate-ping"></div>
-              <svg className="absolute inset-0 w-full h-full animate-[spin_3s_linear_infinite]" viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="48" fill="none" stroke="currentColor" strokeWidth="4" strokeDasharray="75 225" className="text-indigo-600 dark:text-indigo-500" strokeLinecap="round" />
-              </svg>
+            {/* Spinning background glow */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none overflow-hidden">
+              <div className="w-[150%] h-[150%] bg-[conic-gradient(from_0deg,transparent_0_340deg,rgba(99,102,241,0.2)_360deg)] animate-spin" style={{ animationDuration: '4s' }}></div>
             </div>
-            
-            <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-8">Analyzing your article...</h2>
-            
-            <div className="w-full space-y-4 text-left">
-              {steps.map((step, index) => (
-                <div key={index} className="flex items-center gap-3">
-                  {analysisStep > index ? (
-                    <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0" />
-                  ) : analysisStep === index ? (
-                    <Loader2 className="w-5 h-5 text-indigo-500 animate-spin shrink-0" />
-                  ) : (
-                    <div className="w-5 h-5 rounded-full border-2 border-slate-200 dark:border-slate-700 shrink-0"></div>
-                  )}
-                  <span className={`text-sm font-medium transition-colors ${
-                    analysisStep > index ? 'text-slate-700 dark:text-slate-300' :
-                    analysisStep === index ? 'text-indigo-700 dark:text-indigo-400' :
-                    'text-slate-400 dark:text-slate-600'
-                  }`}>
-                    {step}
-                  </span>
-                </div>
-              ))}
+
+            <div className="relative z-10 flex flex-col items-center w-full">
+              <div className="w-28 h-28 bg-indigo-50 dark:bg-indigo-900/30 rounded-3xl flex items-center justify-center mb-10 relative shadow-inner rotate-3">
+                <ScanSearch className="w-12 h-12 text-indigo-600 dark:text-indigo-400" />
+                <div className="absolute inset-0 border-2 border-indigo-500/30 rounded-3xl animate-ping" style={{ animationDuration: '2s' }}></div>
+                <div className="absolute inset-0 border border-indigo-500/50 rounded-3xl animate-pulse"></div>
+              </div>
+              
+              <h2 className="text-3xl font-extrabold text-slate-900 dark:text-white mb-2">Analyzing</h2>
+              <p className="text-slate-500 dark:text-slate-400 mb-10 font-medium tracking-wide">Please wait while the AI processes.</p>
+              
+              <div className="w-full space-y-5 text-left bg-slate-50/50 dark:bg-[#030712]/50 p-6 rounded-3xl border border-slate-100 dark:border-slate-800/50">
+                {steps.map((step, index) => {
+                  const isActive = analysisStep === index;
+                  const isDone = analysisStep > index;
+                  
+                  return (
+                    <div key={index} className="flex items-center gap-4 relative">
+                      {isDone ? (
+                        <div className="w-8 h-8 rounded-full bg-emerald-100 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0 shadow-inner">
+                          <CheckCircle2 className="w-5 h-5" />
+                        </div>
+                      ) : isActive ? (
+                        <div className="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0 shadow-inner relative">
+                          <Loader2 className="w-5 h-5 animate-spin relative z-10" />
+                          <div className="absolute inset-0 rounded-full bg-indigo-400 opacity-20 animate-ping"></div>
+                        </div>
+                      ) : (
+                        <div className="w-8 h-8 rounded-full border-2 border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 shrink-0"></div>
+                      )}
+                      
+                      <span className={`text-[15px] font-semibold transition-all duration-300 ${
+                        isDone ? 'text-slate-700 dark:text-slate-300' :
+                        isActive ? 'text-indigo-700 dark:text-indigo-400 translate-x-1' :
+                        'text-slate-400 dark:text-slate-600'
+                      }`}>
+                        {step}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </motion.div>
         )}
@@ -216,6 +252,3 @@ export default function AnalyzePage() {
     </div>
   );
 }
-
-// Dummy component needed to prevent the missing import error for AlertCircle in the file above
-import { AlertCircle } from 'lucide-react';
