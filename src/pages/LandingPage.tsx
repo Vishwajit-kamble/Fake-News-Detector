@@ -95,70 +95,7 @@ export default function LandingPage() {
             </motion.div>
           </div>
 
-          {/* Premium Floating Interactive Card */}
-          <motion.div
-            initial={{ opacity: 0, y: 60 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4, type: "spring", bounce: 0.2 }}
-            className="mt-24 max-w-4xl mx-auto perspective-1000"
-          >
-            <div className="relative rounded-3xl bg-white/40 dark:bg-[#0a0f1c]/60 backdrop-blur-2xl border border-white/60 dark:border-white/10 p-2 shadow-2xl hover:shadow-indigo-500/20 transition-all duration-500 group transform-gpu hover:rotate-x-2 hover:-translate-y-2">
-              <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/20 via-transparent to-purple-500/20 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-              
-              <div className="bg-white/90 dark:bg-slate-950/90 rounded-2xl p-6 md:p-10 relative overflow-hidden">
-                {/* Decorative gradients inside card */}
-                <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/5 rounded-full blur-3xl -mr-32 -mt-32"></div>
-                <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl -ml-32 -mb-32"></div>
 
-                <div className="flex flex-col md:flex-row gap-10 relative z-10">
-                  <div className="flex-1 space-y-6">
-                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs font-semibold tracking-wider text-slate-500 uppercase">
-                      <Activity className="w-3.5 h-3.5 text-indigo-500" /> Live Analysis Example
-                    </div>
-                    
-                    <h3 className="text-2xl font-serif text-slate-900 dark:text-white leading-snug">
-                      "Miracle Superfood Diet Instantly Reverses Aging, Scientists Baffled!"
-                    </h3>
-                    
-                    <div className="space-y-4">
-                      <div className="flex items-start gap-3 p-4 rounded-xl bg-red-50/50 dark:bg-red-500/5 border border-red-100 dark:border-red-500/10 transition-colors hover:bg-red-50 dark:hover:bg-red-500/10">
-                        <ShieldAlert className="w-5 h-5 text-red-500 shrink-0 mt-0.5" />
-                        <div>
-                          <div className="text-sm font-semibold text-slate-900 dark:text-white">Sensational Language</div>
-                          <div className="text-sm text-slate-600 dark:text-slate-400">Uses highly emotional and absolute terms ("Miracle", "Instantly Reverses").</div>
-                        </div>
-                      </div>
-                      <div className="flex items-start gap-3 p-4 rounded-xl bg-amber-50/50 dark:bg-amber-500/5 border border-amber-100 dark:border-amber-500/10 transition-colors hover:bg-amber-50 dark:hover:bg-amber-500/10">
-                        <Search className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
-                        <div>
-                          <div className="text-sm font-semibold text-slate-900 dark:text-white">Unverified Claims</div>
-                          <div className="text-sm text-slate-600 dark:text-slate-400">Fails to cite specific scientists or peer-reviewed studies.</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div className="w-full md:w-72 shrink-0 flex flex-col justify-center items-center p-8 bg-slate-50 dark:bg-slate-900/50 rounded-2xl border border-slate-100 dark:border-slate-800 relative overflow-hidden">
-                    {/* Ring animation */}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-48 h-48 border border-red-500/20 rounded-full absolute animate-ping" style={{ animationDuration: '3s' }}></div>
-                      <div className="w-40 h-40 border border-red-500/40 rounded-full absolute animate-spin" style={{ animationDuration: '10s' }}></div>
-                    </div>
-                    
-                    <div className="relative z-10 text-center">
-                      <div className="inline-flex items-center gap-2 text-red-600 dark:text-red-400 font-semibold mb-4 bg-red-100/50 dark:bg-red-500/20 px-4 py-1.5 rounded-full border border-red-200 dark:border-red-500/30">
-                        <ShieldAlert className="w-4 h-4" /> Potentially Misleading
-                      </div>
-                      <div className="text-6xl font-light text-slate-900 dark:text-white tracking-tighter mb-1">
-                        14<span className="text-3xl text-slate-400">%</span>
-                      </div>
-                      <div className="text-xs font-semibold text-slate-500 uppercase tracking-widest">Credibility Score</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.div>
         </div>
       </section>
 
