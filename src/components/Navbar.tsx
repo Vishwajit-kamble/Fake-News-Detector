@@ -20,9 +20,9 @@ export default function Navbar() {
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-20">
           <Link to="/" className="flex items-center gap-3 group">
-            <img src="/favicon.svg" alt="TruthLens AI" className="h-12 w-auto object-contain drop-shadow-md group-hover:scale-105 transition-transform" />
+            <img src="/favicon.png" alt="TruthLens AI" className="h-16 w-auto max-w-[200px] object-contain drop-shadow-md group-hover:scale-105 transition-transform" />
             <span className="font-extrabold text-2xl tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 to-violet-500">TruthLens AI</span>
           </Link>
 
