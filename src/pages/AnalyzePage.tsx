@@ -62,10 +62,8 @@ export default function AnalyzePage() {
       });
       localStorage.setItem('truthlens_history', JSON.stringify(history.slice(0, 50)));
 
-      setTimeout(() => {
-        setResult(data);
-        setIsAnalyzing(false);
-      }, 3500);
+      setResult(data);
+      setIsAnalyzing(false);
 
     } catch (err: any) {
       setError(err?.message || 'Failed to analyze the article.');

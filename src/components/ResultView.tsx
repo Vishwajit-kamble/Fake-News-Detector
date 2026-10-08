@@ -237,6 +237,15 @@ export default function ResultView({ article, result, onReset }: ResultViewProps
               let hostname = "link";
               let url = link.startsWith('http') ? link : `https://${link}`;
               try { hostname = new URL(url).hostname; } catch {}
+              
+              const gradients = [
+                "from-indigo-500 to-blue-900",
+                "from-emerald-500 to-teal-900",
+                "from-amber-500 to-orange-900",
+                "from-purple-500 to-fuchsia-900",
+                "from-rose-500 to-red-900"
+              ];
+              const gradient = gradients[i % gradients.length];
 
               return (
                 <motion.a 
@@ -247,19 +256,27 @@ export default function ResultView({ article, result, onReset }: ResultViewProps
                   href={url} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 hover:bg-white dark:bg-slate-900/50 dark:hover:bg-slate-800/80 border border-slate-200 dark:border-slate-700/50 transition-all hover:shadow-lg hover:shadow-slate-200/50 dark:hover:shadow-black/50 group"
+                  className="flex flex-col rounded-2xl bg-slate-50 hover:bg-white dark:bg-slate-900/50 dark:hover:bg-slate-800/80 border border-slate-200 dark:border-slate-700/50 transition-all hover:shadow-xl hover:shadow-indigo-500/10 hover:-translate-y-1 group overflow-hidden"
                 >
-                  <img 
-                    src={`https://icon.horse/icon/${hostname}`} 
-                    alt={hostname}
-                    className="w-10 h-10 rounded-xl bg-white dark:bg-slate-800 p-1 border border-slate-200 dark:border-slate-700 object-contain shrink-0 group-hover:scale-110 transition-transform shadow-sm" 
-                    onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                  />
-                  <div className="flex-1 min-w-0">
-                    <div className="truncate text-sm font-bold text-slate-900 dark:text-white group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{hostname}</div>
-                    <div className="truncate text-xs text-slate-500 dark:text-slate-400 mt-0.5">{link}</div>
+                  <div className="h-32 w-full relative overflow-hidden border-b border-slate-200 dark:border-slate-700/50 flex shrink-0">
+                    <div className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-700`}></div>
+                    <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay"></div>
+                    <div className="absolute bottom-3 left-4 flex items-center gap-2 z-10">
+                       <img 
+                         src={`https://icon.horse/icon/${hostname}`} 
+                         alt={hostname}
+                         className="w-7 h-7 rounded-lg bg-white p-0.5 shadow-md" 
+                         onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                       />
+                       <span className="text-white text-sm font-bold truncate max-w-[200px] drop-shadow-md">{hostname}</span>
+                    </div>
                   </div>
-                  <ExternalLink className="w-4 h-4 shrink-0 text-slate-400 group-hover:text-indigo-500 transition-colors" />
+                  <div className="p-4 flex items-start justify-between gap-2 bg-white/50 dark:bg-transparent">
+                    <div className="min-w-0">
+                      <div className="truncate text-xs font-medium text-slate-500 dark:text-slate-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">{link}</div>
+                    </div>
+                    <ExternalLink className="w-4 h-4 shrink-0 text-slate-400 group-hover:text-indigo-500 transition-colors mt-0.5" />
+                  </div>
                 </motion.a>
               );
             })}
