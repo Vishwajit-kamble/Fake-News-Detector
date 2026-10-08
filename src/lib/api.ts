@@ -16,6 +16,7 @@ export interface AnalyzeResponse {
   };
   key_phrases: string[];
   related_links: string[];
+  image_keywords: string[];
 }
 
 // You can either paste your API key here directly, or into frontend/.env as VITE_GEMINI_API_KEY
@@ -61,7 +62,8 @@ Provide your analysis in the exact JSON structure below, with NO markdown format
     "neutrality": "low, medium, or high"
   },
   "key_phrases": ["list", "of", "up", "to", "5", "suspicious", "or", "notable", "phrases", "from", "the", "text"],
-  "related_links": ["https://example.com/link1", "https://example.com/link2 (Provide 1-3 URLs to real news articles or fact-checking sources related to this topic, if available. Otherwise, return an empty array)"]
+  "related_links": ["https://example.com/link1", "https://example.com/link2 (Provide 1-3 URLs to real news articles or fact-checking sources related to this topic, if available. Otherwise, return an empty array)"],
+  "image_keywords": ["earthquake", "india", "Provide 1-2 generic visual keywords representing the main subjects of the article for stock photo search"]
 }
 `;
 
